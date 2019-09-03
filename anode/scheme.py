@@ -1,4 +1,4 @@
-#*
+# *
 # @file scheme.py 
 # This file is part of ANODE library.
 #
@@ -14,22 +14,25 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with ANODE.  If not, see <http://www.gnu.org/licenses/>.
-#*
-from .time_stepper import Time_Stepper
+# *
+from .timestepper import TimeStepper
 
-class Euler(Time_Stepper):
+
+class Euler(TimeStepper):
     def step(self, func, t, dt, y):
         out = y + dt * func(t, y)
         return out
 
-class RK2(Time_Stepper):
+
+class RK2(TimeStepper):
     def step(self, func, t, dt, y):
         k1 = dt * func(t, y)
         k2 = dt * func(t + dt / 2.0, y + 1.0 / 2.0 * k1)
         out = y + k2
         return out
 
-class RK4(Time_Stepper):
+
+class RK4(TimeStepper):
     def step(self, func, t, dt, y):
         k1 = dt * func(t, y)
         k2 = dt * func(t + dt / 2.0, y + 1.0 / 2.0 * k1)

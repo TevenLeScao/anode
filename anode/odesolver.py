@@ -1,4 +1,4 @@
-#*
+# *
 # @file odesolver.py 
 # This file is part of ANODE library.
 #
@@ -14,21 +14,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with ANODE.  If not, see <http://www.gnu.org/licenses/>.
-#*
+# *
 from .scheme import Euler, RK2, RK4
 
 
-def odesolver(func, z0, options = None):
+def odesolver(func, z0, options=None):
     if options == None:
         Nt = 2
     else:
         Nt = options['Nt']
     if (options['method'] == 'Euler'):
-        solver = Euler(func, z0, Nt = Nt)
+        solver = Euler(func, z0, Nt=Nt)
     elif (options['method'] == 'RK2'):
-        solver = RK2(func, z0, Nt = Nt)
+        solver = RK2(func, z0, Nt=Nt)
     elif (options['method'] == 'RK4'):
-        solver = RK4(func, z0, Nt = Nt)
+        solver = RK4(func, z0, Nt=Nt)
     else:
         print('error unsupported method passed')
         return
