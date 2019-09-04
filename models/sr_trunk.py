@@ -3,14 +3,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 import math
-from torchdiffeq._impl.conv import StaticODEfunc
+from torchdiffeq._impl.conv import StaticODEfunc, DenseODEfunc
 
 
 class SRTrunk(nn.Module):
     def __init__(self, n_filters, n_blocks, ODEBlock_=None):
         super(SRTrunk, self).__init__()
         self.ODEBlock = ODEBlock_
-        self.odefunc = StaticODEfunc(n_filters, n_blocks)
+        self.odefunc = DenseODEfunc(dim=n_filters, growth=n_filters//2, nb=5, bias=True, normalization=False)
 
     def forward(self, x):
         return self.odefunc(x)
