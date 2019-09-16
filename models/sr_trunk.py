@@ -3,17 +3,27 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 import math
-from torchdiffeq._impl.conv import StaticODEfunc, DenseODEfunc
+from torchdiffeq._impl.conv import ODEfunc, DenseODEfunc, StaticODEfunc
 
 
 class SRTrunk(nn.Module):
     def __init__(self, n_filters, n_blocks, ODEBlock_=None):
         super(SRTrunk, self).__init__()
-        self.ODEBlock = ODEBlock_
-        self.odefunc = DenseODEfunc(dim=n_filters, growth=n_filters//2, nb=5, bias=True, normalization=False)
+        # self.odefunc = ODEfunc(n_filters, n_blocks)
+        # self.odefunc = DenseODEfunc(dim=n_filters, growth=n_filters//2, nb=n_blocks, bias=True, normalization=False)
+        self.odefunc = StaticODEfunc(dim=n_filters, nb=n_blocks, normalization=False)
+        self.ODEBlock = ODEBlock_(self.odefunc)
 
     def forward(self, x):
-        return self.odefunc(x)
+        return self.ODEBlock(x)
+
+    @property
+    def nfe(self):
+        return self.ODEBlock.nfe
+
+    @nfe.setter
+    def nfe(self, value):
+        self.ODEBlock.nfe = value
 
 
 def lr_schedule(lr, epoch):
